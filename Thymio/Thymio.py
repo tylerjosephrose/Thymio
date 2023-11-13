@@ -1,11 +1,13 @@
-from tdmclient import ClientAsync, aw, ClientAsyncCacheNode
-import PySimpleGUI as sg
-from typing import Callable, Any, Dict
-from Thymio.logger import logger
-from Thymio.Exceptions import ThymioException, NoNodesException
-from Thymio.Callback import Callback
 import re
 from enum import Enum
+from typing import Callable, Any, Dict
+
+import PySimpleGUI as sg
+from tdmclient import ClientAsync, aw, ClientAsyncCacheNode
+
+from Thymio.Callback import Callback
+from Thymio.Exceptions import ThymioException, NoNodesException
+from Thymio.logger import logger
 
 """
 Resources:

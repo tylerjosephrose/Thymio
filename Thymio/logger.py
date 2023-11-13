@@ -5,12 +5,12 @@ from datetime import datetime
 logger = logging.getLogger("Thymio")
 
 
-def setup_logger():
+def setup_logger(level='INFO'):
     """
     Setup the logger for the Thymio library.
     """
     logger = logging.getLogger("Thymio")
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(level)
 
     # log to file
     if not os.path.exists("logs"):
