@@ -1,13 +1,13 @@
 import re
-from enum import Enum
 from typing import Callable, Any, Dict
 
 import PySimpleGUI as sg
 from tdmclient import ClientAsync, aw, ClientAsyncCacheNode
 
+from Thymio import logger
 from Thymio.Callback import Callback
+from Thymio.Enums import Color, Sound
 from Thymio.Exceptions import ThymioException, NoNodesException
-from Thymio.logger import logger
 
 """
 Resources:
@@ -16,31 +16,6 @@ https://www.thymio.org/products/programming-with-thymio-suite/programming-with-p
 https://pypi.org/project/tdmclient/
 """
 
-
-class Color(Enum):
-    """
-    Enum of predefined colors.
-    """
-    RED = "#FF0000"
-    GREEN = "#00FF00"
-    BLUE = "#0000FF"
-    YELLOW = "#FFFF00"
-    CYAN = "#00FFFF"
-    MAGENTA = "#FF00FF"
-    WHITE = "#FFFFFF"
-    OFF = "#000000"
-
-
-class Sound(Enum):
-    STARTUP = 0
-    SHUTDOWN = 1
-    ARROW_BTN = 2
-    CENTER_BTN = 3
-    ALARM = 4
-    SCHOCK = 5
-    FOLLOWING = 6
-    PROXIMITY = 7
-    STOP = 8
 
 
 class Thymio:

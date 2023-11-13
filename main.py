@@ -1,8 +1,10 @@
-from Thymio.Thymio import Thymio, Color
-from tdmclient import ClientAsync
-from Thymio.logger import logger, setup_logger
-import asyncio
 import argparse
+import asyncio
+
+from tdmclient import ClientAsync
+
+from Thymio import logger
+from Thymio.Thymio import Thymio, Color
 
 
 async def main(client_addr=None, client_port=None, client_password=None):
@@ -22,6 +24,6 @@ if __name__ == '__main__':
     parser.add_argument("--client_port", default=None, type=int, help="The port of the client to connect to.")
     parser.add_argument("--client_password", default=None, help="The password of the client to connect to.")
     args = parser.parse_args()
-    setup_logger(level=args.loglevel.upper())
+    logger.setLevel(args.loglevel.upper())
     asyncio.run(main(client_addr=args.client_addr, client_port=args.client_port, client_password=args.client_password))
     logger.info("End of program")
