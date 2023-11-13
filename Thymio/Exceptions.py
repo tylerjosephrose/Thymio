@@ -5,7 +5,7 @@ class ThymioException(Exception):
     """
     Base class for Thymio Exceptions
     """
-    def __int__(self, msg):
+    def __init__(self, msg):
         """
         Create a ThymioException
         """

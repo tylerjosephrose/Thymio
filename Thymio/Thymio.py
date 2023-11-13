@@ -1,11 +1,9 @@
 import re
-from typing import Callable, Any, Dict
 
 import PySimpleGUI as sg
 from tdmclient import ClientAsync, aw, ClientAsyncCacheNode
 
 from Thymio import logger
-from Thymio.Callback import Callback
 from Thymio.Enums import Color, Sound
 from Thymio.Exceptions import ThymioException, NoNodesException
 
@@ -17,11 +15,11 @@ https://pypi.org/project/tdmclient/
 """
 
 
-
 class Thymio:
     """
     Class to control a Thymio robot.
     """
+    node: ClientAsyncCacheNode = None
     __callbacks__ = []
 
     # Connection Methods
@@ -139,17 +137,6 @@ class Thymio:
         """
         self.disconnect()
 
-    # Utility Functions
-    @staticmethod
-    def hex_to_rgb(hex_code: str):
-        """
-        Convert a hex string to an RGB tuple.
-        :param hex_code: string of the hex value to convert
-        :return: tuple of the RGB values
-        """
-        hex_code = hex_code.lstrip('#')
-        return tuple(int(int(hex_code[i:i + 2], 16)/7.96875) for i in (0, 2, 4))
-
     @staticmethod
     def celsius_to_fahrenheit(celsius: float) -> float:
         """
@@ -158,74 +145,6 @@ class Thymio:
         :return: float of the temperature in Fahrenheit
         """
         return celsius * 9 / 5 + 32
-
-    # Event Functions
-    async def __on_variables_changed__(self, node, variables):
-        """
-        Callback function for when variables change. This will feed other registered callbacks for specific variable
-        changes.
-        :param node: AsyncClientCacheNode object of the node that changed
-        :param variables: Dictionary of the variables that changed
-        """
-        logger.debug(f"Variables changed: {variables}")
-        if node != self.node:
-            return
-
-        if self.temp_in_fahrenheit and "temperature" in variables:
-            variables["temperature"] = self.celsius_to_fahrenheit(variables["temperature"])
-
-        for callback in self.__callbacks__:
-            if callback.variable_keys.issubset(set(variables.keys())):
-                callback.fn(node, variables)
-
-    async def register_callback(self, fn: Callable[[ClientAsyncCacheNode, Dict], Any], variable_keys: set[str]):
-        """
-        Register a callback function for when the specified variables change.
-        :param fn: callback function to call which must accept the node and variables as parameters
-        :param variable_keys: set of strings of the variable keys to watch for (all must change in order for callback
-        to be called
-
-        Available variables:
-        acc: Accelerometer
-            0: x-axis (left/right where left is positive)
-            1: y-axis (forward/backward where backward is positive)
-            2: z-axis (up/down where down is positive)
-        button.backward: Backward button
-        button.center: Center button
-        button.forward: Forward button
-        button.left: Left button
-        button.right: Right button
-        mic.intensity: Microphone intensity
-        motor.left.speed: Left motor speed
-        motor.left.target: Left motor target speed
-        motor.right.speed: Right motor speed
-        motor.right.target: Right motor target speed
-        prox.comm.rx: Proximity sensors (communication)
-        prox.ground.ambiant: Ambiant light from the ground sensors (0 is no light and 1023 is maximum light)
-            0: Front Left
-            1: Front Right
-        prox.ground.reflected: Reflected light from the ground sensors (0 is maximum light and 1023 is no light)
-            0: Front Left
-            1: Front Right
-        prox.ground.delta: Difference between the reflected light and the ambiant light linked to the distance to the ground and the ground color
-            0: Front Left
-            1: Front Right
-        prox.horizontal: Horizontal proximity sensors (0 is no obstacle and ~4500 is touching an obstacle)
-            0: Front Left
-            1: Front Middle Left
-            2: Front Middle
-            3: Front Middle Right
-            4: Front Right
-            5: Back Left
-            6: Back Right
-        sd.present: SD card present
-        temperature: Temperature in specified units
-        timer.period: Timer period
-            0: timer 0
-            1: timer 1
-        """
-        logger.info(f"Registering callback for variables: {variable_keys}")
-        self.__callbacks__.append(Callback(fn, variable_keys))
 
     # Action Functions
     async def motors(self, left: int, right: int):
