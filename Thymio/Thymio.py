@@ -3,7 +3,7 @@ import re
 import PySimpleGUI as sg
 from tdmclient import ClientAsync, aw, ClientAsyncCacheNode
 
-from Thymio import logger
+from Thymio.Logger import logger
 from Thymio.Enums import Color, Sound
 from Thymio.Exceptions import ThymioException, NoNodesException
 

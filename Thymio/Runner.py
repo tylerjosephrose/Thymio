@@ -2,7 +2,7 @@ from typing import Callable, Awaitable, Any
 
 from tdmclient import ClientAsync
 
-from Thymio import logger
+from Thymio.Logger import logger
 from Thymio.Thymio import Thymio
 
 

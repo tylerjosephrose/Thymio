@@ -1,4 +1,4 @@
-from Thymio import logger
+from Thymio.Logger import logger
 
 
 class ThymioException(Exception):

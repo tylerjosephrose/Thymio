@@ -1,8 +1,9 @@
 import argparse
 
-from Thymio import logger
+from Thymio.Logger import logger
 from Thymio.Runner import Runner
 from avoid_obstacles import avoid_obstacles
+from manual_control import manual_control
 
 
 async def actual_prog(client, th):
@@ -16,7 +17,8 @@ async def actual_prog(client, th):
 
 PROGRAMS = {
     "test": actual_prog,
-    "avoid_obstacles": avoid_obstacles
+    "avoid_obstacles": avoid_obstacles,
+    "manual_control": manual_control
 }
 
 

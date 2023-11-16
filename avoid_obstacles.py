@@ -1,4 +1,4 @@
-from Thymio import logger
+from Thymio.Logger import logger
 from Thymio.Exceptions import ThymioException
 
 
@@ -25,6 +25,8 @@ async def avoid_obstacles(client, th):
         if prox_front_middle_left > close_limit or prox_front > close_limit or prox_front_middle_right > close_limit:
             await th.motors(0, 0)
             raise ThymioException("Too close to an obstacle: FAIL!")
+
+        # TODO: if we get too close, slow down the other wheel as well
 
         left_speed, right_speed = 250, 250
         if prox_front_middle_left > close_limit - 500:
